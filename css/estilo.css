@@ -1,0 +1,47 @@
+.marcador1{ /*Usado apenas para testar div's/containers, etc. Apagar*/
+	background: #E66E6E;
+	border: 1px solid blue;
+
+}
+
+/*ID do cabeçalho, da fonte*/
+#fonteCabecalho{
+	color: #FFFFFF;
+	font-size: 60px;
+
+}
+
+/*Fundo preto usado no cabecalho por exemplo - CadetBlue*/
+#blocoCabecalho{
+	background: #5F9EA0;
+	border: 1px solid #FFFFFF;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.blocoDeOpcao{
+	border: 1px solid #5F9EA0;
+	border-radius: 10px
+}
+
+.tabelas{
+	border: 1;
+	border-style: solid;
+}
+
+/* Menor largura para um bloco de nome em uma tabela */
+.blocoNome{
+	min-width: 500px;
+}
+
+
+.imagemArtista{
+	min-height: 35px;
+	min-width: 35px;
+	max-height: 50px;
+	max-width: 50px;
+
+}
+
+
+
