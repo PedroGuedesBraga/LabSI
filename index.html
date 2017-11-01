@@ -14,27 +14,27 @@
 
   </head>
 
- 
+
 
 
   <body>
     <header  id="blocoCabecalho"><h1 id="fonteCabecalho">Music System</h1></header>
 
-    <div class="container" ng-controller = "sistemaController">   
+    <div class="container" ng-controller = "sistemaController">
       <!-- Dentro dessa row tem 2 colunas, uma com as options(menor) e a outra com resto(maior) -->
       <div class="row">
-       
+
         <!--Coluna menor -->
         <div class="col-md-3">
-        
+
           <br>
           <div class="text-center blocoDeOpcao">
-            
+
             <br><h5>Clique no botão abaixo para adicionar um novo artista</h5>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#janela">Adicionar artista</button>
 
             <!-- Janela de adicao de artista/modal window-->
-            <form class="modal" id="janela">
+            <form class="modal fade" id="janela" name="artistaForm">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <!-- cabecalho -->
@@ -47,22 +47,22 @@
 
                   <!-- corpo -->
                   <div class="modal-body">
-                    <input type="text" name="artista" id="artista" placeholder="Nome do artista" ng-model="artista.nome">
-                    <input type="text" name="url" placeholder="Link da imagem do artista" ng-model="artista.imagem">
+                    <input type="text" class="form-control" name="artista" id="artista" placeholder="Nome do artista" ng-model="artista.nome" ng-required="true">
+                    <input type="text" class="form-control" name="url" placeholder="Link da imagem do artista" ng-model="artista.imagem">
                   </div>
 
                   <!-- rodape -->
                   <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" ng-click="adicionarArtista(artista)" data-dismiss:"modal">Feito!</button>
+                    <button type="button" class="btn btn-primary" ng-click="adicionarArtista(artista)" data-dismiss:"modal" ng-disabled="artistaForm.$invalid">Feito!</button>
                   </div>
 
                 </div>
               </div>
-              
+
             </form>
 
           </div>
-        
+
         </div>
 
         <div class="col-md-2">
@@ -75,28 +75,28 @@
           <h2
           <div class="row">
             <br><h2>Meus Artistas</h2>
-            <table class="table table-dark table-hover table-responsive" width="400">
+            <table class="table table-dark table-hover table-responsive" width="400" ng-show="isPopulated(artistas)">
               <tr>
                 <th>
-                  Nome 
+                  Nome
                 </th>
-                
+
               </tr>
               <tr ng-repeat="artista in artistas">
                 <td class="blocoNome">{{artista.nome}}</td>
                 <td><img class="img-fluid rounded imagemArtista" ng-src="{{artista.imagem}}"></td>
               </tr>
-              
+
             </table>
 
 
-          </div>  
-      
-        </div>
-        
-      </div>    
+          </div>
 
-      
+        </div>
+
+      </div>
+
+
 
     <footer>Desenvolvido por: Pedro Guedes</footer>
 
