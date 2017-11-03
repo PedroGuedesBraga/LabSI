@@ -21,13 +21,19 @@
 
 .blocoDeOpcao{
 	border: 1px solid #5F9EA0;
-	border-radius: 10px
+	border-radius: 5px;
+
 }
 
-.tabelas{
-	border: 1;
-	border-style: solid;
+.tabelaArtistas{
+	max-width: 580px;
 }
+
+.tabelaMusicas{
+	max-width: 580px;
+}
+
+
 
 /* Menor largura para um bloco de nome em uma tabela */
 .blocoNome{
@@ -42,6 +48,3 @@
 	max-width: 50px;
 
 }
-
-
-
