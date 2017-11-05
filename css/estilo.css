@@ -47,4 +47,16 @@
 	max-height: 50px;
 	max-width: 50px;
 
+.imagemArtistaInfoDetalhada{
+	min-height: 35px;
+	min-width: 35px;
+	max-height: 35px;
+	max-width: 35px;
+}
+
+.linkTransparente{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
 }
