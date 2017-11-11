@@ -13,7 +13,7 @@
 
 /*Fundo preto usado no cabecalho por exemplo - CadetBlue*/
 #blocoCabecalho{
-	background: #5F9EA0;
+	background: #483D8B;
 	border: 1px solid #FFFFFF;
 	border-radius: 10px;
 	width: 100%;
@@ -25,19 +25,32 @@
 
 }
 
-.tabelaArtistas{
-	max-width: 580px;
+.tabelaArtistasFavoritos{
+	width: 100%;
+	max-width: 650px;
 }
 
 .tabelaMusicas{
-	max-width: 580px;
+	width: 100%;
+	max-width: 720px;
+}
+
+/*Cor de fundo*/
+.corDeFundo{
+	background-color: #40E0D0;
 }
 
 
 
 /* Menor largura para um bloco de nome em uma tabela */
 .blocoNome{
-	min-width: 500px;
+	width: 100%;
+	max-width: 650px;
+}
+
+.tabelaArtista{
+	max-width: 650px;
+	width: 100%;
 }
 
 

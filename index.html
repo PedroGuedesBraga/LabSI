@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-br" ng-app="sistemaDeMusica">
   <head>
-    <title>Hello, world!</title>
+    <title>Music Manager</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,8 +20,8 @@
   </head>
 
 
-  <body>
-    <header  id="blocoCabecalho"><h1 id="fonteCabecalho">Music System</h1></header>
+  <body class="corDeFundo">
+    <header class="text-center"  id="blocoCabecalho"><h1 id="fonteCabecalho">Music Manager</h1></header>
 
     <div class="container-fluid" ng-controller = "sistemaController">
       <!-- Dentro dessa row tem 2 colunas, uma com as options(menor) e a outra com resto(maior), essa row se refere apenas aos artistas -->
@@ -37,7 +37,7 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#janela">Adicionar artista</button>
 
             <!-- Janela de adicao de artista/modal window-->
-            <form class="modal fade" id="janela" name="artistaForm">
+            <form class="modal fade hide in" id="janela" name="artistaForm">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <!-- cabecalho -->
@@ -59,7 +59,7 @@
 
                   <!-- rodape -->
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" ng-click="adicionarArtista(artista)" ng-disabled="artistaForm.$invalid" data-dismiss="modal">Adicionar artista</button>
+                    <button type="button" class="btn btn-primary" ng-click="adicionarArtista(artista)" ng-disabled="artistaForm.$invalid">Adicionar artista</button>
                   </div>
 
                 </div>
@@ -87,11 +87,10 @@
           <!-- Nessa coluna ficara a tabela com artistas -->
 
 
-            <br><h2>Meus Artistas</h2>
-            <br />
+            <br><h2 ng-show="isPopulated(artistas)">Meus Artistas</h2>
             <input type="text" class="form-control" name="artistaPesquisado" id="artistaPesquisado" placeholder="Digite o nome do artista que queira pesquisar" ng-hide="statusCaixaDePesquisaDeArtistas" class="ng-hide" ng-model="nomeArtistaBuscado" />
             <br />
-            <table class="tabelaArtistas table table-dark table-hover table-responsive" width="400" ng-show="isPopulated(artistas)">
+            <table class="tabelaArtistas table table-dark table-hover table-responsive tabelaArtista" width="400" ng-show="isPopulated(artistas)">
               <tr>
                 <th>
                   Nome
@@ -101,7 +100,9 @@
               <tr ng-repeat="artista in artistas | filter:nomeArtistaBuscado">
                 <td class="blocoNome"><span data-toggle="modal" data-target = "#infoArtista" ng-click="select(artista)" >{{artista.nome}}</span></td>
                 <td><img class="img-fluid rounded imagemArtista" ng-src="{{artista.imagem}}"></td>
-                <!-- modal com info de artistas -->
+                <td><button type="button" class="btn btn-primary" ng-click="adicionarAosFavoritos(artista)" ng-disabled="artista.favorito">+Fav</button></td>
+
+                <!-- modal com info de artistas (também é usada na lista de artistas favoritos) -->
                 <div class="modal fade" id="infoArtista" name="infoArtista">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -110,10 +111,9 @@
                         <h5 class="modal-header">{{selected.nome}}</h5
                         <br />
                       </div>
-                        <div>
+                        <div class="modal-body">
                           <img class="imagemArtistaInfoDetalhada" ng-src="{{selected.imagem}}">
-                        </div>
-                        <div>
+
                           <h6>Lista de Albuns:</h6>
                           <div ng-repeat="album in retornaAlbuns(selected.nome)">
                             <div>
@@ -125,8 +125,9 @@
 
                           <input type="text" class="form-control"  placeholder="Digite a última música que você ouviu do artista" ng-model= "selected.ultimaMusica"/>
                           <input type="number" class="form-control" placeholder="Qual nota você dá ao referido artista?" ng-model= "selected.nota" min="0" max="10" maxlength="2" />
+                        </div>
+                        <div class="modal-footer">
                           <button type="submit" class="btn btn-primary" ng-click="atualizaArtista(selected)" data-dismiss="modal">Concluir</button>
-
                         </div>
                       </div>
 
@@ -197,8 +198,8 @@
         <div class="col-md-7">
 
           <!-- nessa coluna, temos a tabela com as musicas, ano, etc... -->
-          <br /><h2>Minhas músicas</h2>
-          <table class="tabelaMusicas table table-dark table-hover table-responsive" width="400" ng-show="isPopulated(albuns)">
+          <br /><h2 ng-show="isPopulated(albuns)">Minhas músicas</h2>
+          <table class="tabelaMusicas table table-dark table-hover table-responsive"  ng-show="isPopulated(albuns)">
             <tr>
               <th>
                 Nome
@@ -222,8 +223,31 @@
               <td>{{musica.album}}</td>
               <td>{{musica.ano}}</td>
               <td>{{musica.duracao}}</td>
+              <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAdicionarMusicaNaPlaylist" ng-click="select(musica)">Adicionar em uma playlist</button></td>
             </tr>
           </table>
+
+          <!-- Modal para adicionar musica em uma playlist -->
+          <form class="modal fade" id="modalAdicionarMusicaNaPlaylist" name="modalAdicionarMusicaNaPlaylist">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3>Adicionar música em uma playlist</h3>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <h6>Digite o nome da playlist que deseja adicionar "{{selected.nome}}"</h6>
+                  <input class="form-control" type="text" ng-required="true" ng-model="nomePlaylist"/>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="adicionaMusicaNaPlaylist(selected, nomePlaylist)" ng-disabled="modalAdicionarMusicaNaPlaylist.$invalid">Adicionar música</button>
+                </div>
+
+              </div>
+
+            </div>
+
+          </form>
 
 
         </div>
@@ -234,6 +258,169 @@
 
       </div> <!-- Termino da linha de musicas - adicionar, etc...-->
 
+      <!-- Linha com as opcoes/tabelas de artistas favoritos -->
+      <div class="row">
+
+        <div class="col-md-3">
+          <!-- Apenas para ficar como padrao -->
+        </div>
+
+        <div class="col-md-2">
+          <!-- Apenas para ficar como padrao -->
+        </div>
+
+        <div class="col-md-7">
+          <br /><h2 ng-show="existeArtistasFavoritos()">Meus artistas favoritos</h2>
+          <table class="table table-dark table-hover table-responsive tabelaArtistasFavoritos"  ng-show="existeArtistasFavoritos()">
+            <tr>
+              <th>
+                Nome
+              </th>
+
+            </tr>
+            <tr ng-repeat="favorito in artistasFavoritos">
+              <td class="blocoNome">
+                <span data-toggle="modal" data-target="#infoArtista" ng-click="select(favorito)">{{favorito.nome}}</span>
+              </td>
+              <td>
+                <img class="img-fluid rounded imagemArtista" ng-src="{{favorito.imagem}}">
+              </td>
+              <td>
+                  <button class="btn btn-primary" data-toggle="modal" data-target="#modalConfirmacao" ng-click="select(favorito)">-Fav</button>
+              </td>
+
+            </tr>
+
+          </table>
+
+          <!--Modal de confirmacao de remocao dos favoritos -->
+          <div class="modal fade" id="modalConfirmacao" name="modalConfirmacao">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <h3>Clique em confirmar se deseja realmente remover "{{selected.nome}}" da sua coleção de artistas favoritos</h3>
+                  <h6>*Para sair, clique fora da caixa de confirmação</h6>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-primary"  ng-click="removerDosFavoritos(selected)" data-dismiss="modal">Confirmar</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+
+      </div>
+
+      <!--Linha com coisas referentes as playlists -->
+      <div class="row">
+        <div class="col-md-3">
+          <div class="text-center blocoDeOpcao">
+            <br />
+            <h5>Clique no botão abaixo para criar uma nova playlist</h5>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPlaylist">Nova playlist</button>
+
+
+            <div class="modal fade" id="modalPlaylist" name="modalPlaylist">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3>Nova playlist</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <h6>Digite o nome da nova playlist:</h6>
+                    <input type="text" class="form-control" ng-model="nomeDaPlaylist"/>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="adicionaPlaylist(nomeDaPlaylist)">Criar</button>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+        <div class="col-md-2">
+
+        </div>
+
+        <div class="col-md-7">
+          <!-- tabela com as playlists -->
+          <br /><h2 ng-show="isPopulated(playlists)">Minhas playlists</h2>
+          <table class="table table-dark table-hover table-responsive tabelaArtistasFavoritos" ng-show="isPopulated(playlists)">
+            <tr>
+              <th>
+                Nome da playlist
+              </th>
+            </tr>
+            <tr ng-repeat = "playlist in playlists">
+              <td class="blocoNome">
+                <span data-toggle="modal" data-target="#modalInfoPlaylist" ng-click="select(playlist)">{{playlist.nome}}</span>
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" ng-click="select(playlist)" data-toggle="modal" data-target="#modalConfirmacaoDeExclusao">Excluir</button>
+              </td>
+
+            </tr>
+          </table>
+
+          <!-- modal que mostra as infos das playlists -->
+          <div class="modal fade" id="modalInfoPlaylist">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3>Musicas da playlist: "{{selected.nome}}:"</h3>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                  <div ng-repeat="musica in selected.retornaMusicas()">
+                    <h6>-{{musica.nome}} <button type="button" class="btn btn-danger btn-sm" ng-click="excluirMusicaDaPlaylist(selected, musica)">Excluir</button></h6>
+                  </div>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- modal de confirmacao de exclusão de uma playlist -->
+          <div class="modal fade" id="modalConfirmacaoDeExclusao">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h3>Exclusão da playlist: "{{selected.nome}}"</h3>
+                </div>
+                <div class="modal-body">
+                  <h5>Clique em confirmar se deseja excluir {{selected.nome}}</h5>
+                  <h7>*Clique fora da caixa de texto se deseja cancelar</h7>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="excluirPlaylist(selected)">Confirmar</button>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
 
     </div> <!-- termino do container-->
 

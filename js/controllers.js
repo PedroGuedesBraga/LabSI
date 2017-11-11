@@ -3,8 +3,10 @@ angular.module("sistemaDeMusica", []);
 //$scope é um objeto que vai pertencer ao view e ao controller ao msm tempo
 angular.module("sistemaDeMusica").controller("sistemaController", function($scope){
 	$scope.artistas = [];
+	$scope.artistasFavoritos = [];
 	$scope.albuns = [];
 	$scope.musicas = []; //Array com todas as musicas do sistema
+	$scope.playlists = []; //Array com as playlists do sistema
 	$scope.statusCaixaDePesquisaDeArtistas = true;
 	$scope.selected; //Variavel usada para se referir ao artista que se está tratando se quiser exibir mais informacoes (US03) - Ver: https://stackoverflow.com/questions/33904251/ng-repeat-does-not-work-in-bootstrap-modal
 
@@ -23,6 +25,7 @@ angular.module("sistemaDeMusica").controller("sistemaController", function($scop
 		if(existeArtista(artista)){
 			alert("Artista já existente no sistema");
 		}else{
+			artista.favorito = false; //propriedade q indica se um artista é favorito ou nao. Sempre adiciona um artista nao favorito
 			$scope.artistas.push(angular.copy(artista)); //Cria uma copia do objeto artista e ela que sera adicionada ao array
 			delete $scope.artista; //Deleta o artista que esta no $scope, a copia ja foi add no array
 		}
@@ -53,6 +56,113 @@ angular.module("sistemaDeMusica").controller("sistemaController", function($scop
 			}
 		}
 	}
+
+	//Add artista aos favoritos
+	$scope.adicionarAosFavoritos = function(artista){
+		if(!artista.favorito){
+			artista.favorito = true;
+			$scope.artistasFavoritos.push(artista);
+		}
+	}
+
+	$scope.removerDosFavoritos = function(artista){
+		for(i = 0; i < $scope.artistasFavoritos.length; i++){
+			if(artista.nome == $scope.artistasFavoritos[i].nome){
+				$scope.artistasFavoritos.splice(i, 1); //remove 1 elemento do indice i
+			}
+		}
+		artista.favorito = false;
+	}
+
+
+
+
+
+	//Verifica se existem artistas favoritos no sistema.
+	$scope.existeArtistasFavoritos = function(){
+		for(i = 0; i < $scope.artistas.length; i++){
+			if($scope.artistas[i].favorito == true){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//Criacao do tipo Playlist
+	function Playlist(nome){
+		this.nome = nome;
+		this.musicasDaPlaylist = [];
+
+		this.adicionaMusica = function(musica){
+			this.musicasDaPlaylist.push(musica);
+		}
+
+		//retorna array de musicas da playlist
+		this.retornaMusicas = function(){
+			return this.musicasDaPlaylist;
+		}
+	}
+
+	//Adiciona uma musica em uma playlist se ela nao tiver uma musica com o msm nome
+	$scope.adicionaMusicaNaPlaylist = function(musica, nomeDaPlaylist){
+		if(!$scope.containsPlaylist(nomeDaPlaylist)){
+			alert("Não existe essa playlist no sistema");
+		}else{
+			for(var i = 0; i < $scope.playlists.length; i++){
+				if($scope.playlists[i].nome == nomeDaPlaylist){
+					if(containsMusica($scope.playlists[i].retornaMusicas(), musica.nome)){
+						alert("A playlist já tem uma música com esse nome!");
+					}else{
+						$scope.playlists[i].adicionaMusica(musica);
+						alert("Musica adicionada na playlist com sucesso!");
+					}
+				}
+			}
+		}
+	}
+
+
+	//Adiciona playlist no sistema
+	$scope.adicionaPlaylist = function(nome){
+		if(!$scope.containsPlaylist(nome)){
+			$scope.playlists.push(new Playlist(nome));
+		}else{
+			alert("Já existe uma playlist com o mesmo nome no sistema!")
+		}
+
+
+	}
+
+	//Verifica se uma playlist com o mesmo nome existe no sistema
+	$scope.containsPlaylist = function(nome){
+		for(i = 0; i < $scope.playlists.length; i++){
+			if($scope.playlists[i].nome == nome){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//Excluir uma playlist dada a playlist
+	$scope.excluirPlaylist = function(playlist){
+		for (var i = 0; i < $scope.playlists.length; i++){
+			if($scope.playlists[i].nome == playlist.nome){
+				$scope.playlists.splice(i, 1);
+				alert("Playlist excluida com sucesso.")
+			}
+		}
+	}
+
+	 //Excluir uma musica de uma playlist dada a musica
+	$scope.excluirMusicaDaPlaylist = function(playlist, musica){
+		for(var i = 0; i < playlist.retornaMusicas().length; i++){
+			if(playlist.retornaMusicas()[i].nome == musica.nome){
+				playlist.retornaMusicas().splice(i, 1);
+			}
+		}
+	}
+
+
 
 
 	//Criacao do tipo album
