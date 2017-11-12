@@ -9,6 +9,7 @@
     <!-- Bootstrap CSS--> <!--tem no site do bootstrap para copy -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
     <script src="js/controllers.js" type="text/javascript"></script>
     <!-- Optional JavaScript -->
@@ -34,7 +35,7 @@
           <div class="text-center blocoDeOpcao">
 
             <br><h5>Clique no botão abaixo para adicionar um novo artista</h5>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#janela">Adicionar artista</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#janela"><i class="fa fa-plus-circle" aria-hidden="true"> </i> Adicionar artista</button>
 
             <!-- Janela de adicao de artista/modal window-->
             <form class="modal fade hide in" id="janela" name="artistaForm">
@@ -73,7 +74,7 @@
           <!-- bloco com o botao de pesquisar artista -->
           <div class="text-center blocoDeOpcao">
             <br /><h5>Clique no botão abaixo para pesquisar um artista</h5>
-            <button class="btn btn-primary" ng-click="changeStatusCaixaPesquisa()">Pesquisar artista</button>
+            <button class="btn btn-primary" ng-click="changeStatusCaixaPesquisa()"><i class="fa fa-search" aria-hidden="true"></i> Pesquisar artista</button>
 
           </div>
 
@@ -101,7 +102,7 @@
               <tr ng-repeat="artista in artistas | filter:nomeArtistaBuscado">
                 <td class="blocoNome"><span data-toggle="modal" data-target = "#infoArtista" ng-click="select(artista)" >{{artista.nome}}</span></td>
                 <td><img class="img-fluid rounded imagemArtista" ng-src="{{artista.imagem}}"></td>
-                <td><button type="button" class="btn btn-primary" ng-click="adicionarAosFavoritos(artista)" ng-disabled="artista.favorito">+Fav</button></td>
+                <td><button type="button" class="btn btn-danger" ng-click="adicionarAosFavoritos(artista)" ng-disabled="artista.favorito"><i class="fa fa-heart" aria-hidden="true"></i></button></td>
 
                 <!-- modal com info de artistas (também é usada na lista de artistas favoritos) -->
                 <div class="modal fade" id="infoArtista" name="infoArtista">
@@ -125,7 +126,7 @@
                           <h5> <span>Nota do artista: {{selected.nota}} </span> </h5>
 
                           <input type="text" class="form-control"  placeholder="Digite a última música que você ouviu do artista" ng-model= "selected.ultimaMusica"/>
-                          <input type="number" class="form-control" placeholder="Qual nota você dá ao referido artista?" ng-model= "selected.nota" min="0" max="10" maxlength="2" />
+                          <input type="number" class="form-control" placeholder="Qual nota você dá ao referido artista?" min="0" max="10" maxlength="2" ng-model= "selected.nota" min="0" max="10" maxlength="2" />
                         </div>
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-primary" ng-click="atualizaArtista(selected)" data-dismiss="modal">Concluir</button>
@@ -157,7 +158,7 @@
           <div class="text-center blocoDeOpcao">
 
             <br /><h5>Clique no botão abaixo para adicionar uma nova música</h5>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#musicForm">Adicionar música</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#musicForm"><i class="fa fa-plus-circle" aria-hidden="true"> </i> Adicionar música</button>
 
             <!-- janela de adicao de musicas-->
             <form  class="modal fade" id="musicForm" name="musicaForm">
@@ -287,7 +288,7 @@
                 <img class="img-fluid rounded imagemArtista" ng-src="{{favorito.imagem}}">
               </td>
               <td>
-                  <button class="btn btn-primary" data-toggle="modal" data-target="#modalConfirmacao" ng-click="select(favorito)">-Fav</button>
+                  <button class="btn btn-danger" data-toggle="modal" data-target="#modalConfirmacao" ng-click="select(favorito)"><i class="fa fa-times" aria-hidden="true"></i></button>
               </td>
 
             </tr>
@@ -323,7 +324,7 @@
           <div class="text-center blocoDeOpcao">
             <br />
             <h5>Clique no botão abaixo para criar uma nova playlist</h5>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPlaylist">Nova playlist</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPlaylist"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nova playlist</button>
 
 
             <div class="modal fade" id="modalPlaylist" name="modalPlaylist">
@@ -369,7 +370,7 @@
                 <span data-toggle="modal" data-target="#modalInfoPlaylist" ng-click="select(playlist)">{{playlist.nome}}</span>
               </td>
               <td>
-                <button type="button" class="btn btn-danger btn-sm" ng-click="select(playlist)" data-toggle="modal" data-target="#modalConfirmacaoDeExclusao">Excluir</button>
+                <button type="button" class="btn btn-danger btn-sm" ng-click="select(playlist)" data-toggle="modal" data-target="#modalConfirmacaoDeExclusao"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
               </td>
 
             </tr>
@@ -385,7 +386,7 @@
                 </div>
                 <div class="modal-body">
                   <div ng-repeat="musica in selected.retornaMusicas()">
-                    <h6>-{{musica.nome}} <button type="button" class="btn btn-danger btn-sm" ng-click="excluirMusicaDaPlaylist(selected, musica)">Excluir</button></h6>
+                    <h6>-{{musica.nome}} <button type="button" class="btn btn-danger btn-sm" ng-click="excluirMusicaDaPlaylist(selected, musica)"><i class="fa fa-trash" aria-hidden="true"></i></button></h6>
                   </div>
                 </div>
                 <div class="modal-footer">

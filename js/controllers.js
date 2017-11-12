@@ -26,6 +26,9 @@ angular.module("sistemaDeMusica").controller("sistemaController", function($scop
 			alert("Artista já existente no sistema");
 		}else{
 			artista.favorito = false; //propriedade q indica se um artista é favorito ou nao. Sempre adiciona um artista nao favorito
+			if(artista.imagem === undefined){ //Se o artista nao tiver imagem
+				artista.imagem = "img/interrogacao.jp";
+			}
 			$scope.artistas.push(angular.copy(artista)); //Cria uma copia do objeto artista e ela que sera adicionada ao array
 			delete $scope.artista; //Deleta o artista que esta no $scope, a copia ja foi add no array
 		}
@@ -175,6 +178,7 @@ angular.module("sistemaDeMusica").controller("sistemaController", function($scop
 			if(!containsMusica(this.musicas, musica.nome)){
 				this.musicas.push(musica);
 				$scope.musicas.push(musica);
+				alert("Música adicionada com sucesso")
 			}else{
 				alert("Musica ja existente no álbum");
 			}
@@ -203,7 +207,6 @@ angular.module("sistemaDeMusica").controller("sistemaController", function($scop
 		}
 		var novoAlbum = new Album(nomeDoAlbum, autor);
 		$scope.albuns.push(novoAlbum);
-		alert("Um novo album foi criado - TIRAR ALERT");
 		return novoAlbum;
 	}
 
