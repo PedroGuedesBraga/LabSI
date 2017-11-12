@@ -19,9 +19,14 @@
 	width: 100%;
 }
 
+.blocoLinha{
+
+}
+
 .blocoDeOpcao{
 	border: 1px solid #5F9EA0;
 	border-radius: 5px;
+	box-shadow: 7px 7px 7px ;
 
 }
 
